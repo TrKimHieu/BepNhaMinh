@@ -15,6 +15,7 @@ config.resolver.nodeModulesPaths = [
 ];
 
 // Tránh Metro bundle trùng: chỉ dùng một bản react/react-native.
-config.resolver.disableHierarchicalLookup = true;
+// KHÔNG set disableHierarchicalLookup=true ở đây — vừa chặn việc Metro
+// resolve ra ngoài root project (AppEntry của Expo nằm trong node_modules).
 
 module.exports = config;

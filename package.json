@@ -11,9 +11,16 @@
   "engines": {
     "node": ">=22 <25"
   },
+  "overrides": {
+    "react": "19.3.0",
+    "typescript": "~6.0.3"
+  },
   "scripts": {
+    "start": "npm run dev:mobile",
     "dev:api": "npm run dev -w backend",
     "dev:mobile": "npm run start -w mobile",
+    "dev:mobile:tunnel": "npm run start -w mobile -- --tunnel",
+    "expo": "npx expo start mobile",
     "build": "npm run build -w @bepnhaminh/shared && npm run build -w backend",
     "lint": "eslint .",
     "typecheck": "npm run typecheck --workspaces --if-present",
