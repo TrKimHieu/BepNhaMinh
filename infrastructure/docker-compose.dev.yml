@@ -1,0 +1,42 @@
+# Môi trường dev local — chỉ DB và S3 giả lập.
+# API và mobile chạy trực tiếp trên máy (npm run dev:api / dev:mobile) để có hot reload.
+#
+#   npm run db:up      (từ root repo)
+#   npm run db:down
+name: bepnhaminh-dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bepnhaminh
+      POSTGRES_PASSWORD: bepnhaminh
+      POSTGRES_DB: bepnhaminh
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bepnhaminh -d bepnhaminh']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # S3 giả lập: cùng API với AWS S3, không tốn tiền, chạy offline được.
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: bepnhaminh
+      MINIO_ROOT_PASSWORD: bepnhaminh-secret
+    ports:
+      - '9000:9000' # S3 API  → http://localhost:9000
+      - '9001:9001' # Console  → http://localhost:9001
+    volumes:
+      - miniodata:/data
+
+volumes:
+  pgdata:
+  miniodata:

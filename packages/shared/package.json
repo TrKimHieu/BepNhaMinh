@@ -1,0 +1,23 @@
+{
+  "name": "@bepnhaminh/shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Type, zod schema và constant dùng chung giữa mobile và backend",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.0"
+  }
+}

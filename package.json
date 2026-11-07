@@ -1,0 +1,40 @@
+{
+  "name": "bep-nha-minh",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bếp Nhà Mình — monorepo (mobile + backend + shared)",
+  "workspaces": [
+    "mobile",
+    "backend",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "dev:api": "npm run dev -w backend",
+    "dev:mobile": "npm run start -w mobile",
+    "build": "npm run build -w @bepnhaminh/shared && npm run build -w backend",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:up": "docker compose -f infrastructure/docker-compose.dev.yml up -d",
+    "db:down": "docker compose -f infrastructure/docker-compose.dev.yml down",
+    "db:migrate": "npm run db:migrate -w backend",
+    "db:seed": "npm run db:seed -w backend",
+    "db:studio": "npm run db:studio -w backend",
+    "clean": "node -e \"const{rmSync}=require('fs');for(const p of ['node_modules','dist','backend/node_modules','backend/dist','mobile/node_modules','packages/shared/node_modules','packages/shared/dist'])rmSync(p,{recursive:true,force:true})\""
+  },
+  "allowScripts": {
+    "@prisma/client@6.19.3": true,
+    "prisma@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "esbuild@0.28.2": true
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "typescript-eslint": "^8.72.1"
+  }
+}

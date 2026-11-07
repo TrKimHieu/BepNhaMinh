@@ -1,0 +1,12 @@
+# Chuẩn hoá line ending trong repo là LF, kể cả khi dev dùng Windows.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary

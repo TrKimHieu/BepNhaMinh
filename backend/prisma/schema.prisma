@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Người dùng
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships   FamilyMember[]
+  createdFamilies Family[]    @relation("FamilyOwner")
+  recipes       Recipe[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+/// Refresh token lưu dạng hash — lộ DB cũng không dùng được token thật.
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+// ---------------------------------------------------------------------------
+// Gia đình
+// ---------------------------------------------------------------------------
+
+model Family {
+  id         String   @id @default(cuid())
+  name       String
+  inviteCode String   @unique
+  ownerId    String
+  createdAt  DateTime @default(now())
+
+  owner     User           @relation("FamilyOwner", fields: [ownerId], references: [id])
+  members   FamilyMember[]
+  recipes   Recipe[]
+  mealPlans MealPlanEntry[]
+
+  @@map("families")
+}
+
+enum FamilyRole {
+  OWNER
+  MEMBER
+}
+
+model FamilyMember {
+  userId   String
+  familyId String
+  role     FamilyRole @default(MEMBER)
+  joinedAt DateTime   @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  @@id([userId, familyId])
+  @@index([familyId])
+  @@map("family_members")
+}
+
+// ---------------------------------------------------------------------------
+// Công thức
+// ---------------------------------------------------------------------------
+
+model Recipe {
+  id          String   @id @default(cuid())
+  familyId    String
+  createdById String
+  title       String
+  description String?
+  imageUrl    String?
+  servings    Int      @default(2)
+  prepMinutes Int      @default(0)
+  cookMinutes Int      @default(0)
+  steps       String[]
+  tags        String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  family      Family             @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  createdBy   User               @relation(fields: [createdById], references: [id])
+  ingredients RecipeIngredient[]
+  mealPlans   MealPlanEntry[]
+
+  /// Tìm kiếm theo tên món (ILIKE) — dùng cho ô search
+  @@index([familyId, title])
+  @@map("recipes")
+}
+
+model RecipeIngredient {
+  id       String   @id @default(cuid())
+  recipeId String
+  name     String
+  quantity Decimal  @db.Decimal(10, 2)
+  /// 'g' | 'kg' | 'ml' | 'l' | 'tsp' | 'tbsp' | 'piece' | 'bunch' | 'pinch'
+  unit     String
+  position Int      @default(0)
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId])
+  @@map("recipe_ingredients")
+}
+
+// ---------------------------------------------------------------------------
+// Thực đơn
+// ---------------------------------------------------------------------------
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+model MealPlanEntry {
+  id        String   @id @default(cuid())
+  familyId  String
+  recipeId  String
+  /// Ngày địa phương dạng YYYY-MM-DD, không kèm giờ
+  date      DateTime @db.Date
+  mealType  MealType
+  servings  Int      @default(2)
+  createdAt DateTime @default(now())
+
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Restrict)
+
+  /// Một bữa chỉ có một món chính; đổi món thì update, không thêm dòng mới
+  @@unique([familyId, date, mealType])
+  @@index([familyId, date])
+  @@map("meal_plan_entries")
+}

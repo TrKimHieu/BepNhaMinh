@@ -1,0 +1,23 @@
+# .dockerignore đặt ở ROOT vì Docker build context là root repo
+# (image backend cần packages/shared).
+
+**/node_modules
+**/dist
+**/.expo
+**/coverage
+**/*.log
+
+# Không đưa source mobile vào context — image backend không cần
+mobile
+
+# Không bao giờ đưa secret vào image
+**/.env
+**/.env.*
+!**/.env.example
+
+.git
+.github
+.vscode
+docs
+*.md
+terraform.tfstate*
