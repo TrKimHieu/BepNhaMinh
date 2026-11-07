@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" fill="none">
+  <defs>
+    <linearGradient id="bepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA580C" />
+      <stop offset="100%" stop-color="#C2410C" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Container -->
+  <rect width="120" height="120" rx="28" fill="url(#bepGrad)" filter="url(#shadow)" />
+
+  <!-- Vector Pot and Steam Lines -->
+  <!-- Steam Curves -->
+  <path d="M48 30 C45 35, 51 40, 48 45" stroke="#FFF7ED" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9" />
+  <path d="M60 26 C57 32, 63 38, 60 45" stroke="#FFF7ED" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9" />
+  <path d="M72 30 C69 35, 75 40, 72 45" stroke="#FFF7ED" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9" />
+
+  <!-- Pot Lid / Top Rim -->
+  <path d="M34 54 C34 51.7909 35.7909 50 38 50 H82 C84.2091 50 86 51.7909 86 54 C86 56.2091 84.2091 58 82 58 H38 C35.7909 58 34 56.2091 34 54 Z" fill="#FFF7ED" />
+
+  <!-- Pot Body -->
+  <path d="M38 58 L42 82 C42.6 86.8 46.7 90 51.5 90 H68.5 C73.3 90 77.4 86.8 78 82 L82 58 Z" fill="#FFF7ED" />
+
+  <!-- Pot Handles -->
+  <path d="M30 63 C27 63 25 65.5 25 68.5 C25 71.5 27 74 30 74 L36 74 L37 63 Z" fill="#FFF7ED" opacity="0.85" />
+  <path d="M90 63 C93 63 95 65.5 95 68.5 C95 71.5 93 74 90 74 L84 74 L83 63 Z" fill="#FFF7ED" opacity="0.85" />
+
+  <!-- Accent Inner Hearth Detail -->
+  <path d="M52 70 Q60 63 68 70" stroke="#EA580C" stroke-width="2.5" stroke-linecap="round" fill="none" />
+</svg>
