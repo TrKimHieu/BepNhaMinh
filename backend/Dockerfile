@@ -15,7 +15,10 @@ COPY package.json ./
 COPY packages/shared/package.json packages/shared/
 COPY backend/package.json backend/
 
-RUN npm install \
+# Source và tsconfig chưa có ở layer này; shared được build tường minh ở stage build.
+# Chỉ bỏ prepare của workspace, giữ lifecycle scripts của Prisma và dependencies.
+RUN npm pkg delete scripts.prepare --workspace @bepnhaminh/shared \
+ && npm install \
       --workspace @bepnhaminh/shared \
       --workspace backend \
       --include-workspace-root \
@@ -43,7 +46,9 @@ COPY package.json ./
 COPY packages/shared/package.json packages/shared/
 COPY backend/package.json backend/
 
-RUN npm install --omit=dev \
+# Runtime nhận shared/dist từ stage build nên không chạy lại prepare.
+RUN npm pkg delete scripts.prepare --workspace @bepnhaminh/shared \
+ && npm install --omit=dev \
       --workspace @bepnhaminh/shared \
       --workspace backend \
       --include-workspace-root \
