@@ -1,5 +1,9 @@
 # Hợp đồng API
 
+<p align="center">
+  <img src="images/logo.png" alt="Logo Bếp Nhà Mình" width="120" height="120">
+</p>
+
 Base URL: `/api/v1`
 
 Mọi request/response dùng JSON. Mọi field thời gian là chuỗi ISO 8601 UTC.

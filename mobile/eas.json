@@ -20,7 +20,7 @@
     "production": {
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.bepnhaminh.app/api/v1"
+        "EXPO_PUBLIC_API_URL": "https://bepnhaminh-api.onrender.com/api/v1"
       }
     }
   },

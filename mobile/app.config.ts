@@ -15,9 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: 'bepnhaminh',
   userInterfaceStyle: 'light',
 
-  // TODO: thêm icon + splash sau khi có asset trong assets/images/
-  // icon: './assets/images/icon.png',
-  // splash: { image: './assets/images/splash.png', resizeMode: 'contain' },
+  icon: './assets/images/logo.png',
 
   ios: {
     supportsTablet: false,
@@ -25,12 +23,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: 'app.bepnhaminh',
-    adaptiveIcon: {
-      backgroundColor: '#F6F1E7',
-    },
+    icon: './assets/images/logo.png',
+  },
+  web: {
+    favicon: './assets/images/logo.png',
   },
 
   extra: {
-    apiUrl: process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3000/api/v1',
+    apiUrl: process.env.EXPO_PUBLIC_API_URL ?? 'https://bepnhaminh-api.onrender.com/api/v1',
   },
 });

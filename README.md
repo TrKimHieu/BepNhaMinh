@@ -1,504 +1,415 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a id="readme-top"></a>
+# Bếp Nhà Mình
 
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+<p align="center">
+  <img src="docs/images/logo.png" alt="Logo Bếp Nhà Mình" width="180" height="180">
+</p>
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/your-username/bep-nha-minh">
-    <img src="docs/images/logo.svg" alt="Bếp Nhà Mình Logo" width="96" height="96">
-  </a>
+Ứng dụng lên thực đơn, quản lý công thức và danh sách đi chợ cho gia đình. Monorepo gồm React Native / Expo, backend Express / Prisma và package TypeScript dùng chung.
 
-  <h1 align="center">Bếp Nhà Mình</h1>
+**Dev mới bắt đầu tại [Chạy thử Expo Go](#expo-go).** Bạn có thể dùng API Render hiện có để mở app trên điện thoại mà chưa cần mật khẩu database, JWT secret hoặc tài khoản Render / Supabase. Sau khi chạy thử, xem [Xin biến từ Scrum Master](#bien-moi-truong) để nhận cấu hình đúng cho task được giao.
 
-  <p align="center">
-    <strong>Giải pháp lên thực đơn, quản lý món ăn và đi chợ thông minh cho gia đình.</strong>
-    <br />
-    Hệ thống Monorepo hiện đại xây dựng trên nền tảng React Native (Expo) và Node.js (Express).
-    <br />
-    <br />
-    <a href="docs/00-overview.md"><strong>Khám phá tài liệu »</strong></a>
-    &middot;
-    <a href="docs/02-api-contract.md">Hợp đồng API</a>
-    &middot;
-    <a href="https://github.com/your-username/bep-nha-minh/issues/new?labels=bug">Báo lỗi</a>
-    &middot;
-    <a href="https://github.com/your-username/bep-nha-minh/issues/new?labels=enhancement">Đề xuất tính năng</a>
-  </p>
-</div>
+## Mục lục
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary><strong>Mục lục (Table of Contents)</strong></summary>
-  <ol>
-    <li>
-      <a href="#về-dự-án">Về dự án</a>
-      <ul>
-        <li><a href="#công-nghệ-sử-dụng">Công nghệ sử dụng</a></li>
-        <li><a href="#kiến-trúc-hệ-thống">Kiến trúc hệ thống</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#bắt-đầu">Bắt đầu</a>
-      <ul>
-        <li><a href="#yêu-cầu-hệ-thống">Yêu cầu hệ thống</a></li>
-        <li><a href="#cài-đặt">Cài đặt</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#hướng-dẫn-sử-dụng">Hướng dẫn sử dụng</a>
-      <ul>
-        <li><a href="#1-quản-lý-cơ-sở-dữ-liệu-với-docker">1. Quản lý cơ sở dữ liệu với Docker</a></li>
-        <li><a href="#2-khởi-chạy-backend-api">2. Khởi chạy Backend API</a></li>
-        <li><a href="#3-khởi-chạy-ứng-dụng-mobile-expo">3. Khởi chạy ứng dụng Mobile (Expo)</a></li>
-        <li><a href="#bảng-cổng-dịch-vụ-ports--services">Bảng cổng dịch vụ (Ports & Services)</a></li>
-        <li><a href="#bảng-tra-cứu-lệnh-command-cheatsheet">Bảng tra cứu lệnh (Command Cheatsheet)</a></li>
-      </ul>
-    </li>
-    <li><a href="#xử-lý-sự-cố-troubleshooting">Xử lý sự cố (Troubleshooting)</a></li>
-    <li><a href="#lộ-trình-phát-triển-roadmap">Lộ trình phát triển (Roadmap)</a></li>
-    <li><a href="#đóng-góp-contributing">Đóng góp (Contributing)</a></li>
-    <li><a href="#giấy-phép-license">Giấy phép (License)</a></li>
-    <li><a href="#liên-hệ-contact">Liên hệ (Contact)</a></li>
-    <li><a href="#lời-cảm-ơn-acknowledgments">Lời cảm ơn (Acknowledgments)</a></li>
-  </ol>
-</details>
+- [Hiện trạng và cấu trúc](#cau-truc)
+- [Chuẩn bị](#chuan-bi)
+- [Chạy thử Expo Go từng bước](#expo-go)
+- [Xin biến môi trường từ Scrum Master](#bien-moi-truong)
+- [Chạy backend local](#backend-local)
+- [Lệnh thường dùng](#lenh)
+- [Xử lý lỗi](#loi)
+- [GitHub, Render và Supabase](#deploy)
+- [Làm việc với nhóm](#nhom)
 
----
+<a id="cau-truc"></a>
 
-<!-- ABOUT THE PROJECT -->
-## Về dự án
+## Hiện trạng và cấu trúc
 
-Việc quản lý dinh dưỡng gia đình thường gặp khó khăn do dữ liệu món ăn, kế hoạch bữa ăn và danh sách mua sắm nằm rải rác trên nhiều ứng dụng ghi chú hoặc nhóm nhắn tin. 
+Đã có khung ứng dụng, schema database, migration đầu tiên và backend chạy trên Render. Home gọi `/api/v1/ping` để hiển thị trạng thái server. Đăng nhập, quản lý gia đình, CRUD công thức, thực đơn và danh sách đi chợ đang chờ triển khai; trạng thái xanh chưa có nghĩa các chức năng nghiệp vụ đã hoàn tất.
 
-**Bếp Nhà Mình** cung cấp một giải pháp tập trung, nhất quán và tự động hóa:
+| Thư mục | Nội dung |
+|---|---|
+| `mobile/` | React Native, Expo SDK 58, React 19, navigation và API client |
+| `backend/` | Express 5, Prisma 6, schema và migrations PostgreSQL |
+| `packages/shared/` | Types, constants và Zod schemas dùng chung |
+| `infrastructure/` | Docker Compose cho PostgreSQL / MinIO local và cấu hình hạ tầng |
+| `.github/workflows/` | CI và workflow gọi Render Deploy Hook |
+| `docs/` | Tổng quan, API contract và ADR |
 
-- **Thực đơn tuần có cấu trúc**: Phân chia chi tiết 4 bữa/ngày (sáng, trưa, tối, xế) theo từng thành viên.
-- **Sổ tay công thức chuẩn hóa**: Lưu trữ định lượng nguyên liệu, đơn vị quy đổi và các bước nấu kèm hình ảnh.
-- **Tự động gộp danh sách đi chợ**: Thuật toán tự động tổng hợp khối lượng nguyên liệu từ kế hoạch tuần.
-- **Phân quyền gia đình**: Mô hình Owner/Member quản lý quyền chỉnh sửa và mời qua mã định danh.
-
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
-### Công nghệ sử dụng
-
-Dự án sử dụng bộ công nghệ TypeScript toàn diện từ giao diện tới tầng lưu trữ:
-
-* [![TypeScript][TypeScript]][TypeScript-url]
-* [![React Native][ReactNative]][ReactNative-url]
-* [![Expo][Expo]][Expo-url]
-* [![NodeJS][NodeJS]][NodeJS-url]
-* [![Express][Express]][Express-url]
-* [![Prisma][Prisma]][Prisma-url]
-* [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
-* [![Docker][Docker]][Docker-url]
-* [![Zod][Zod]][Zod-url]
-* [![MinIO][MinIO]][MinIO-url]
-
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
-### Kiến trúc hệ thống
-
-Dự án áp dụng mô hình **Monorepo** quản lý bằng **npm workspaces**:
-
-- **`mobile/`**: Ứng dụng di động đa nền tảng React Native (Expo SDK 58, React 19).
-- **`backend/`**: Dịch vụ RESTful API Node.js 24, Express 5 và Prisma ORM 6.
-- **`packages/shared/`**: Thư viện dùng chung chứa TypeScript Types và Zod Schemas.
-- **`infrastructure/`**: Định nghĩa container Docker Compose (PostgreSQL, MinIO), cấu hình Nginx và hạ tầng đám mây.
-
-```
-                      +---------------------------------------+
-                      |    Mobile App (Expo / React Native)   |
-                      +---------------------------------------+
-                                    |                 \
-                     REST API Calls |                  \ Direct S3 Upload
-                        (Port 3000) |                   \ (Presigned URL)
-                                    v                    v
-+-------------------------------+  +-------------------------------------+
-|      @bepnhaminh/shared       |  | Express 5 API Service (Backend)     |
-| (Zod Schemas + TS Contracts)  |  +-------------------------------------+
-+-------------------------------+         |                     |
-                                          v                     v
-                                +-------------------+ +-------------------+
-                                |   PostgreSQL 16   | |   MinIO (S3 Dev)  |
-                                |    (Docker Dev)   | |    (Docker Dev)   |
-                                +-------------------+ +-------------------+
+```text
+Máy dev chạy Expo / Metro ──tải bundle──> Expo Go trên điện thoại
+                                                │
+                                                └──HTTPS──> API Render
+                                                                │
+                                                                └──Prisma──> PostgreSQL Supabase
 ```
 
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
+Expo / Metro cung cấp mã ứng dụng từ máy dev. API Render chạy độc lập; bạn không cần mở backend local khi chỉ thử app với server online.
 
----
+<a id="chuan-bi"></a>
 
-<!-- GETTING STARTED -->
-## Bắt đầu
+## Chuẩn bị
 
-Hướng dẫn chuẩn bị và thiết lập môi trường phát triển cục bộ.
+| Công cụ | Yêu cầu |
+|---|---|
+| Git | Clone repository và làm việc với branch / PR |
+| Node.js | Khuyến nghị **Node 24**, khớp [`.nvmrc`](.nvmrc); project khai báo `>=22 <25` |
+| npm | Dùng npm đi kèm Node 24; nhóm đang dùng npm 11 |
+| IDE | VS Code hoặc trình soạn thảo có terminal |
+| Điện thoại | Cài Expo Go từ App Store / Google Play, bản hỗ trợ SDK của project |
+| Mạng | Máy tính và điện thoại cùng Wi-Fi để dùng chế độ LAN |
 
-### Yêu cầu hệ thống
-
-Đảm bảo các công cụ dưới đây đã được cài đặt trên máy trạm:
-
-- **Node.js**: Phiên bản `>= 22` (khuyến nghị **Node 24** đồng bộ qua [.nvmrc](file:///C:/Projects/BepNhaMinh_Workspace/.nvmrc))
-  ```sh
-  node -v
-  ```
-- **npm**: Phiên bản `>= 11` (đi kèm Node 24)
-  ```sh
-  npm -v
-  ```
-- **Docker Desktop**: Hỗ trợ Docker Compose v2 để chạy cơ sở dữ liệu
-  ```sh
-  docker --version
-  docker compose version
-  ```
-- **Môi trường chạy Mobile**:
-  - *Thiết bị thực tế*: Cài đặt ứng dụng **Expo Go** trên Android hoặc iOS.
-  - *Môi trường giả lập*: Android Studio Emulator hoặc Xcode Simulator (macOS).
-
-### Cài đặt
-
-1. **Sao chép mã nguồn**:
-   ```sh
-   git clone https://github.com/your-username/bep-nha-minh.git
-   cd bep-nha-minh
-   ```
-
-2. **Cài đặt dependencies cho toàn bộ workspace**:
-   ```sh
-   npm install
-   ```
-   > [!NOTE]
-   > Lệnh này sẽ cài đặt toàn bộ gói phụ thuộc cho root, mobile, backend và tự động biên dịch package `@bepnhaminh/shared`.
-
-3. **Khởi tạo tệp biến môi trường**:
-   - Trên Linux / macOS:
-     ```sh
-     cp backend/.env.example backend/.env
-     cp mobile/.env.example mobile/.env
-     ```
-   - Trên Windows PowerShell:
-     ```powershell
-     Copy-Item backend\.env.example backend\.env
-     Copy-Item mobile\.env.example mobile\.env
-     ```
-
-4. **Cấu hình địa chỉ mạng nội bộ cho Mobile**:
-   Mở file [mobile/.env](file:///C:/Projects/BepNhaMinh_Workspace/mobile/.env.example), cập nhật `EXPO_PUBLIC_API_URL` trỏ tới IP LAN của máy tính:
-   ```ini
-   EXPO_PUBLIC_API_URL=http://<IP_LAN_CUA_BAN>:3000/api/v1
-   ```
-
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
----
-
-<!-- USAGE EXAMPLES -->
-## Hướng dẫn sử dụng
-
-### 1. Quản lý cơ sở dữ liệu với Docker
-
-Cấu hình phát triển cục bộ được lưu trữ tại [infrastructure/docker-compose.dev.yml](file:///C:/Projects/BepNhaMinh_Workspace/infrastructure/docker-compose.dev.yml), bao gồm PostgreSQL 16 và MinIO (giả lập AWS S3).
+Kiểm tra trên terminal:
 
 ```sh
-# Khởi động dịch vụ nền (PostgreSQL + MinIO)
+git --version
+node --version
+npm --version
+```
+
+Docker, Android Studio và Xcode không bắt buộc để thử bằng Expo Go trên điện thoại thật. Docker chỉ cần nếu bạn chọn chạy PostgreSQL / MinIO local.
+
+Các lệnh `npm ...` bên dưới dùng được trên macOS, Linux và Windows. Nếu PowerShell báo `npm.ps1 cannot be loaded`, dùng `npm.cmd` thay `npm`, ví dụ `npm.cmd ci`; không cần thay execution policy của máy. Tương tự, dùng `npx.cmd` nếu `npx.ps1` bị chặn.
+
+<a id="expo-go"></a>
+
+## Chạy thử Expo Go từng bước
+
+### Bước 1 — Clone repository
+
+Mở terminal trong thư mục muốn chứa code:
+
+```sh
+git clone https://github.com/TrKimHieu/BepNhaMinh.git
+cd BepNhaMinh
+```
+
+Nếu GitHub báo không có quyền truy cập, xin Scrum Master cấp quyền repository cho tài khoản GitHub của bạn, rồi clone lại. Các lệnh tiếp theo chạy tại **root repository**: thư mục `BepNhaMinh` chứa `package.json` và `package-lock.json`.
+
+### Bước 2 — Cài dependencies
+
+```sh
+npm ci
+npm run build -w @bepnhaminh/shared
+```
+
+Chỉ cài ở root; npm workspaces cài dependencies cho mobile, backend và shared. `npm ci` sử dụng lockfile của repository. Shared có `prepare` tự build khi cài; lệnh build riêng giúp xác nhận package dùng chung đã sẵn sàng.
+
+Nếu cài đặt thất bại, xử lý lỗi trước khi đi tiếp. Không tự xóa lockfile hoặc nâng Expo / React Native để bỏ qua lỗi.
+
+### Bước 3 — Tạo cấu hình mobile để chạy thử
+
+Nếu chưa có `mobile/.env`, copy file mẫu.
+
+**Windows PowerShell:**
+
+```powershell
+Copy-Item mobile/.env.example mobile/.env
+```
+
+**macOS / Linux:**
+
+```sh
+cp mobile/.env.example mobile/.env
+```
+
+Nếu đã có `.env`, sửa file hiện tại thay vì copy đè. Mở `mobile/.env`, đặt dòng sau rồi lưu:
+
+```dotenv
+EXPO_PUBLIC_API_URL=https://bepnhaminh-api.onrender.com/api/v1
+```
+
+Đây là URL công khai để thử server hiện có; giữ `/api/v1` ở cuối. Bạn chưa cần tạo `backend/.env` hoặc xin database password / JWT secret ở bước này.
+
+Khi bắt đầu task, **xin biến `EXPO_PUBLIC_API_URL` từ Scrum Master để mobile gọi đúng API dev / staging được phân công**. Không thay đổi dữ liệu dùng chung nếu chưa được giao việc.
+
+### Bước 4 — Kiểm tra API trên trình duyệt
+
+Mở trên máy tính hoặc điện thoại:
+
+- [Health check](https://bepnhaminh-api.onrender.com/health): JSON có `"status":"ok"`.
+- [Ping](https://bepnhaminh-api.onrender.com/api/v1/ping): JSON có `"pong":true`.
+
+Đường dẫn `/` không phải giao diện website; hãy kiểm tra đúng hai endpoint trên. Nếu service dùng Render Free và đang ngủ, request đầu có thể mất khoảng một phút. Đợi `/health` phản hồi rồi kiểm tra app. Xem [giới hạn Render Free](https://render.com/docs/free).
+
+### Bước 5 — Mở Expo
+
+Tại root:
+
+```sh
+npm run start -w mobile -- --clear --go
+```
+
+`--clear` xóa cache Metro, `--go` chọn Expo Go. Terminal sẽ hiện mã QR và địa chỉ development server.
+
+**Giữ terminal mở khi dùng Expo Go.** Nếu chưa có Expo đang chạy, mở terminal mới và chạy lệnh trên; không cần tìm tiến trình để dừng. Muốn restart thì nhấn `Ctrl + C` tại terminal đang chạy Expo, sau đó chạy lại.
+
+Không chạy trực tiếp `npx expo start` ở root: Expo project nằm trong `mobile/`, và Metro tại root chủ động báo lỗi để tránh chạy nhầm. Cách tương đương là vào `mobile` rồi chạy `npx expo start --clear --go`.
+
+### Bước 6 — Quét QR trên điện thoại
+
+1. Kết nối điện thoại và máy tính cùng Wi-Fi.
+2. Android: mở Expo Go và dùng chức năng quét QR. iPhone: dùng Camera quét QR rồi chọn mở bằng Expo Go.
+3. Đợi tải bundle từ máy dev.
+4. Trên Home, xem **Thông tin kết nối**: API Base URL phải đúng URL Render ở trên, có thời điểm phản hồi, dấu ✓ xanh và chữ “Server Bếp Nhà Mình đang hoạt động”.
+
+Màu xanh xác nhận điện thoại gọi được `/ping`; endpoint này chưa kiểm tra truy vấn database hoặc đăng nhập. Hiện chưa có tài khoản demo đăng nhập hoạt động.
+
+Nếu Wi-Fi chặn LAN hoặc điện thoại dùng mạng khác, dừng Expo rồi chạy:
+
+```sh
+npm run start -w mobile -- --clear --go --tunnel
+```
+
+Nếu Expo hỏi cài công cụ hỗ trợ tunnel, làm theo lời nhắc rồi quét **QR mới**. Tunnel giúp tải bundle từ máy dev; API vẫn dùng URL Render trong `.env`. Xem [hướng dẫn Expo](https://docs.expo.dev/get-started/start-developing/).
+
+### Bước 7 — Báo kết quả và xin cấu hình cho task
+
+Báo Scrum Master: đã clone repo, cài dependencies, mở Home trên Expo Go và thấy trạng thái API xanh. Nếu lỗi, gửi tên bước, hệ điều hành, phiên bản Node / npm và log đã che secret. Sau đó xin đúng các biến dưới đây theo công việc được giao.
+
+<a id="bien-moi-truong"></a>
+
+## Xin biến môi trường từ Scrum Master
+
+### Cần xin biến nào để làm gì?
+
+| Công việc | Yêu cầu gửi Scrum Master | Nơi điền |
+|---|---|---|
+| Dev mobile với API của nhóm | **Xin biến `EXPO_PUBLIC_API_URL` từ Scrum Master để gọi đúng API dev / staging.** Giá trị phải có `/api/v1`. | `mobile/.env` |
+| Backend dùng database Supabase dev | **Xin biến `DATABASE_URL` từ Scrum Master để Prisma kết nối database dev được cấp.** Không tự lấy database production. | `backend/.env` |
+| Phát triển xác thực trên backend local | **Xin `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `JWT_ACCESS_TTL`, `JWT_REFRESH_TTL` từ Scrum Master để cấu hình ký / kiểm tra token và thời hạn token của môi trường dev.** | `backend/.env` |
+| Chạy backend theo cấu hình nhóm | **Xin `NODE_ENV`, `PORT`, `CORS_ORIGIN`, `AWS_REGION`, `S3_BUCKET` từ Scrum Master để thống nhất chế độ chạy, cổng API, CORS và cấu hình lưu ảnh dự kiến.** | `backend/.env` |
+| Sửa schema / áp dụng migration lên DB dùng chung | **Xin `DATABASE_URL` đúng môi trường và xác nhận thao tác từ Scrum Master để cập nhật đúng database, tránh ảnh hưởng dev khác.** | `backend/.env` và migration trong PR |
+| Được giao quản lý deploy | **Xin quyền GitHub / Render và `RENDER_DEPLOY_HOOK_URL` từ Scrum Master để GitHub Actions gọi deploy.** | GitHub Actions secret; không đặt trong mobile |
+
+Chỉ làm mobile với API online thì cần `mobile/.env`; không cần xin JWT secret, database password hoặc quyền quản trị Supabase. Nếu chạy backend + database hoàn toàn local, file mẫu và Docker Compose có cấu hình local; xin Scrum Master xác nhận bộ giá trị dev cần dùng.
+
+### Tất cả biến backend hiện được code đọc
+
+Đối chiếu [file mẫu](backend/.env.example) và [bộ kiểm tra cấu hình](backend/src/config/env.ts):
+
+| Biến | Mục đích / yêu cầu |
+|---|---|
+| `NODE_ENV` | `development`, `test` hoặc `production`; local dùng `development` |
+| `PORT` | Cổng API local, mặc định `3000`; Render tự cấp `PORT` |
+| `DATABASE_URL` | URI PostgreSQL gồm thông tin đăng nhập; bắt buộc có giá trị |
+| `JWT_ACCESS_SECRET` | Khóa ký access token; bắt buộc ít nhất 32 ký tự |
+| `JWT_REFRESH_SECRET` | Khóa ký refresh token; bắt buộc ít nhất 32 ký tự và dùng giá trị khác access secret |
+| `JWT_ACCESS_TTL` | Thời hạn access token; mặc định `15m` |
+| `JWT_REFRESH_TTL` | Thời hạn refresh token; mặc định `7d` |
+| `CORS_ORIGIN` | Origin cho phép; nhiều origin phân cách bằng dấu phẩy; local có thể dùng `*` |
+| `AWS_REGION` | Vùng S3 dự kiến; mặc định `ap-southeast-1` |
+| `S3_BUCKET` | Tên bucket; hiện bắt buộc để server qua bước kiểm tra cấu hình, upload ảnh chưa được triển khai |
+
+Nếu Supabase hiển thị `DATABASE_URL` / `DIRECT_URL`, đừng dán cả hai một cách máy móc. **Prisma schema hiện chỉ đọc `DATABASE_URL`**. Xin Scrum Master cung cấp chuỗi đã chọn; khi setup project đã dùng Session pooler có host `…pooler.supabase.com`, cổng `5432`. `DIRECT_URL` chưa được nối vào schema hiện tại.
+
+### Mẫu tin nhắn xin cấu hình
+
+```text
+Em đã clone repo và thử Expo Go [thành công / lỗi ở bước ...].
+Em đang làm task ... trên môi trường dev/staging ...
+Nhờ Scrum Master cung cấp qua kênh riêng:
+- EXPO_PUBLIC_API_URL: để mobile gọi đúng API của môi trường.
+- Nếu cần backend local: DATABASE_URL, bộ JWT và các biến backend dev tương ứng.
+Nhờ xác nhận database em được dùng và em có được phép chạy migration hay không.
+```
+
+### Quy tắc `.env`
+
+- File mobile là `mobile/.env`; file backend là `backend/.env`. Đây là hai file riêng. Sửa `.env.example` không thay đổi cấu hình ứng dụng đang chạy.
+- Không copy đè `.env` đã có. Sửa đúng dòng và lưu file.
+- Không commit `.env`, mật khẩu, JWT secret hoặc Deploy Hook. Chỉ commit `.env.example` với placeholder khi cần thêm biến.
+- `EXPO_PUBLIC_*` là dữ liệu công khai trong bundle. Không đặt JWT secret, mật khẩu database hoặc service role key trong mobile, kể cả dưới tên biến khác. Xem [tài liệu Expo về biến môi trường](https://docs.expo.dev/guides/environment-variables/).
+- Sau khi đổi URL mobile: dừng Expo rồi start lại với `--clear`. Bản app đã build cần build / update bundle tương ứng.
+- Sau khi đổi backend `.env`: restart backend.
+- Che secret trong log / ảnh; nhận cấu hình qua kênh riêng do Scrum Master cung cấp.
+
+<a id="backend-local"></a>
+
+## Chạy backend local
+
+Phần này dành cho dev sửa API / schema; có thể bỏ qua nếu chỉ thử mobile với Render.
+
+### 1. Tạo file và nhận cấu hình
+
+Nếu chưa có `backend/.env`, copy file mẫu từ root:
+
+```powershell
+# Windows PowerShell
+Copy-Item backend/.env.example backend/.env
+```
+
+```sh
+# macOS / Linux
+cp backend/.env.example backend/.env
+```
+
+Điền bộ biến dev nhận từ Scrum Master. Các giá trị local trong file mẫu không phải credentials Supabase. Chọn một cách database bên dưới.
+
+### 2A. PostgreSQL local bằng Docker
+
+Mở Docker Desktop trước. Dùng kết nối khớp Compose trong `backend/.env`:
+
+```dotenv
+DATABASE_URL="postgresql://bepnhaminh:bepnhaminh@localhost:5432/bepnhaminh?schema=public"
+```
+
+Tại root:
+
+```sh
 npm run db:up
-
-# Đồng bộ schema Prisma vào database
-npm run db:migrate
-
-# Nạp dữ liệu mẫu ban đầu
-npm run db:seed
-
-# Mở giao diện quản trị cơ sở dữ liệu (Prisma Studio)
-npm run db:studio
-# -> Truy cập http://localhost:5555 trên trình duyệt
-
-# Dừng toàn bộ dịch vụ cơ sở dữ liệu
-npm run db:down
+npm run db:generate -w backend
+npm run db:deploy -w backend
 ```
 
-> [!IMPORTANT]
-> **Quy tắc Monorepo Docker Build**: Tệp `backend/Dockerfile` phụ thuộc vào `packages/shared`. Ngữ cảnh đóng gói (build context) **bắt buộc** phải đặt tại thư mục gốc repository:
-> ```sh
-> # Thực thi từ root repository
-> docker build -f backend/Dockerfile -t bep-api:latest .
-> ```
+`db:up` mở PostgreSQL tại cổng `5432` và MinIO tại `9000` / `9001`. Đợi PostgreSQL healthy rồi áp dụng migration có sẵn bằng `db:deploy`.
 
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
-### 2. Khởi chạy Backend API
-
-Mở cửa sổ terminal độc lập và chạy API ở chế độ tự động reload (`tsx watch`):
+Tùy chọn, chỉ trên database local riêng:
 
 ```sh
+npm run db:seed
+```
+
+Seed dùng password hash placeholder, **không tạo tài khoản đăng nhập hoạt động**. Chạy nhiều lần có thể thêm công thức trùng; không seed database dùng chung nếu chưa thống nhất.
+
+### 2B. Supabase dev được cấp
+
+Xin `DATABASE_URL` từ Scrum Master, thay nguyên giá trị trong `backend/.env`, rồi generate Prisma Client:
+
+```sh
+npm run db:generate -w backend
+```
+
+Chỉ khi được giao áp dụng migration lên database đó, chạy:
+
+```sh
+npm run db:deploy -w backend
+```
+
+Kiểm tra dòng `Datasource` trong output: phải đúng host / database dự kiến. `localhost:5432` là máy bạn, không phải Supabase. Nếu tự điền password vào URI, ký tự đặc biệt trong phần password phải được URL-encode. Xem [hướng dẫn Supabase](https://supabase.com/docs/guides/database/connecting-to-postgres).
+
+Không chạy `prisma migrate reset` hoặc `db:migrate` lên database dùng chung. `db:migrate` dùng `prisma migrate dev`, dành cho tạo migration trên database phát triển riêng; thống nhất schema và commit migration qua PR.
+
+### 3. Chạy API local
+
+Tại root, trong terminal riêng:
+
+```sh
+npm run build -w @bepnhaminh/shared
 npm run dev:api
 ```
 
-Kiểm tra trạng thái hoạt động:
-- **Trạng thái hệ thống**: [http://localhost:3000/health](http://localhost:3000/health)
-- **Kiểm tra kết nối**: [http://localhost:3000/api/v1/ping](http://localhost:3000/api/v1/ping)
+Giữ terminal mở. Kiểm tra [health local](http://localhost:3000/health) và [ping local](http://localhost:3000/api/v1/ping); thay cổng nếu `PORT` khác `3000`.
 
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
+### 4. Điện thoại gọi API local
 
-### 3. Khởi chạy ứng dụng Mobile (Expo)
+1. Tìm IPv4 LAN của máy: Windows dùng `ipconfig`; macOS / Linux xem cấu hình Wi-Fi hoặc dùng `ifconfig` / `ip a` nếu có.
+2. Sửa `mobile/.env`, ví dụ máy có IP `192.168.1.10`:
 
-Mở cửa sổ terminal riêng cho ứng dụng di động:
-
-#### Xác định địa chỉ IP LAN
-Thiết bị di động thật coi `localhost` là chính nó. Cần xác định địa chỉ IPv4 của máy tính trên mạng nội bộ:
-- **Windows**: Chạy lệnh `ipconfig` trong PowerShell, sao chép giá trị tại mục `IPv4 Address`.
-- **macOS / Linux**: Chạy lệnh `ifconfig` hoặc `ip a`.
-
-#### Các phương thức thực thi
-
-- **Phương thức 1: Mạng cục bộ WiFi (Khuyến nghị)**  
-  Áp dụng khi điện thoại và máy tính kết nối chung mạng WiFi:
-  ```sh
-  npm run dev:mobile
-  ```
-  - *Android*: Sử dụng **Expo Go** quét mã QR trên màn hình terminal.
-  - *iOS*: Sử dụng ứng dụng **Camera** quét mã QR để mở qua Expo Go.
-
-- **Phương thức 2: Chế độ Tunnel (Đường hầm)**  
-  Áp dụng khi thiết bị sử dụng mạng 4G/5G hoặc router chặn giao tiếp nội bộ (AP Isolation):
-  ```sh
-  npm run dev:mobile:tunnel
-  ```
-
-- **Phương thức 3: Máy ảo giả lập**  
-  ```sh
-  # Android Studio Emulator
-  npm run android -w mobile
-
-  # iOS Simulator (macOS)
-  npm run ios -w mobile
-  ```
-
-#### Bảng phím điều khiển Expo Terminal
-
-Trong quá trình Expo server hoạt động, nhấn các phím sau trên terminal:
-
-| Phím | Chức năng |
-|:---:|---|
-| <kbd>r</kbd> | Tải lại (Reload) gói ứng dụng |
-| <kbd>m</kbd> | Đóng / mở Developer Menu trên thiết bị |
-| <kbd>c</kbd> | Xóa sạch cache Metro Bundler |
-| <kbd>j</kbd> | Khởi động trình gỡ lỗi (Debugger) |
-| <kbd>a</kbd> | Chuyển tiếp sang Android Emulator |
-| <kbd>i</kbd> | Chuyển tiếp sang iOS Simulator |
-
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
-### Bảng cổng dịch vụ (Ports & Services)
-
-| Dịch vụ | Cổng | Đường dẫn / Giao thức | Thông tin xác thực | Mục đích |
-|---|:---:|---|---|---|
-| **Backend API** | `3000` | `http://localhost:3000/api/v1` | Bearer Token (nếu có) | REST API chính |
-| **Health Check** | `3000` | `http://localhost:3000/health` | Không yêu cầu | Giám sát trạng thái |
-| **Metro Bundler** | `8081` | `http://localhost:8081` | — | Expo Bundler |
-| **PostgreSQL** | `5432` | `localhost:5432` | `bepnhaminh` / `bepnhaminh` | Database |
-| **MinIO S3 API** | `9000` | `http://localhost:9000` | — | S3 Mock Endpoint |
-| **MinIO Console**| `9001` | `http://localhost:9001` | `bepnhaminh` / `bepnhaminh-secret` | Quản trị Web S3 |
-| **Prisma Studio**| `5555` | `http://localhost:5555` | — | Giao diện đồ họa DB |
-
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
-### Bảng tra cứu lệnh (Command Cheatsheet)
-
-| Lệnh | Phạm vi | Mô tả |
-|---|---|---|
-| `npm run dev:api` | Root | Khởi chạy Express API ở chế độ theo dõi |
-| `npm run dev:mobile` | Root | Khởi chạy Expo Dev Server mạng LAN |
-| `npm run dev:mobile:tunnel` | Root | Khởi chạy Expo Dev Server qua Tunnel |
-| `npm run db:up` | Root | Khởi động PostgreSQL và MinIO trong Docker |
-| `npm run db:down` | Root | Tắt và gỡ container Docker cơ sở dữ liệu |
-| `npm run db:migrate` | Root | Thực thi migration Prisma schema |
-| `npm run db:seed` | Root | Khởi tạo dữ liệu mẫu cho database |
-| `npm run db:studio` | Root | Mở giao diện Prisma Studio |
-| `npm run build` | Root | Biên dịch `@bepnhaminh/shared` và `backend` |
-| `npm run typecheck` | Root | Kiểm tra tính hợp lệ TypeScript toàn dự án |
-| `npm run lint` | Root | Kiểm tra định dạng chuẩn với ESLint |
-| `npm test` | Root | Thực thi bộ kiểm thử tự động |
-| `npm run clean` | Root | Dọn dẹp `node_modules` và thư mục `dist` |
-
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
----
-
-<!-- TROUBLESHOOTING -->
-## Xử lý sự cố (Troubleshooting)
-
-<details>
-  <summary><strong>1. Thiết bị di động không kết nối được tới Backend ("Network request failed")</strong></summary>
-
-  - **Hiện tượng**: Gọi API từ app trên điện thoại thất bại hoặc báo timeout.
-  - **Biện pháp khắc phục**:
-    1. Xác minh Backend đang chạy tại cổng 3000 (`npm run dev:api`).
-    2. Đảm bảo điện thoại và máy tính cùng kết nối vào một mạng WiFi.
-    3. Kiểm tra biến `EXPO_PUBLIC_API_URL` trong `mobile/.env` đã đặt đúng IP LAN (không dùng `localhost`).
-    4. Cấu hình tường lửa máy tính cho phép nhận kết nối đến cổng 3000.
-    5. Chuyển sang chế độ kết nối Tunnel: `npm run dev:mobile:tunnel`.
-</details>
-
-<details>
-  <summary><strong>2. Đã thay đổi IP trong mobile/.env nhưng Expo không cập nhật</strong></summary>
-
-  - **Hiện tượng**: Ứng dụng vẫn gửi request tới địa chỉ IP cũ.
-  - **Biện pháp khắc phục**: Biến có tiền tố `EXPO_PUBLIC_*` được nhúng lúc compile và lưu cache trong Metro. Cần xóa sạch cache khi khởi động:
-    ```sh
-    npx expo start -c mobile
-    ```
-</details>
-
-<details>
-  <summary><strong>3. Đóng gói Docker Backend gặp lỗi "COPY packages/shared: not found"</strong></summary>
-
-  - **Hiện tượng**: Docker build dừng lại ở bước copy dependency.
-  - **Biện pháp khắc phục**: Đứng từ thư mục gốc của repository để thực hiện lệnh:
-    ```sh
-    docker build -f backend/Dockerfile -t bep-api .
-    ```
-</details>
-
-<details>
-  <summary><strong>4. Sửa đổi mã nguồn trong packages/shared nhưng không có hiệu lực</strong></summary>
-
-  - **Hiện tượng**: Backend hoặc Mobile không nhận các type hoặc schema mới.
-  - **Biện pháp khắc phục**: Cần biên dịch lại thư viện shared:
-    ```sh
-    # Biên dịch một lần:
-    npm run build -w @bepnhaminh/shared
-
-    # Hoặc bật chế độ tự động theo dõi:
-    npm run dev -w @bepnhaminh/shared
-    ```
-</details>
-
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
----
-
-<!-- ROADMAP -->
-## Lộ trình phát triển (Roadmap)
-
-### Giai đoạn MVP
-- [x] Khởi tạo kiến trúc Monorepo (npm workspaces)
-- [x] Thiết lập hạ tầng Docker Dev (PostgreSQL 16, MinIO)
-- [x] Thiết kế Schema Prisma và Hợp đồng API
-- [ ] Xác thực người dùng (Email/Password, JWT Access/Refresh)
-- [ ] Quản lý Gia đình và mã mời thành viên
-- [ ] Quản lý danh mục công thức món ăn (CRUD + S3 Upload)
-- [ ] Lập kế hoạch thực đơn tuần theo 4 bữa/ngày
-- [ ] Tự động tổng hợp danh sách đi chợ theo tuần
-
-### Kế hoạch mở rộng
-- [ ] Đề xuất thực đơn thông minh bằng trí tuệ nhân tạo (AI/LLM)
-- [ ] Nhắc nhở thời gian chuẩn bị bữa qua Push Notification
-- [ ] Xuất bản và chia sẻ công thức ra cộng đồng
-
-Theo dõi tiến độ chi tiết tại [Danh sách Issues](https://github.com/your-username/bep-nha-minh/issues).
-
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
-
----
-
-<!-- CONTRIBUTING -->
-## Đóng góp (Contributing)
-
-Đóng góp mã nguồn giúp dự án hoàn thiện và chất lượng hơn. Quy trình thực hiện như sau:
-
-1. **Fork** dự án về tài khoản GitHub cá nhân.
-2. Tạo nhánh làm việc mới:
-   ```sh
-   git checkout -b feature/TenTinhNang
+   ```dotenv
+   EXPO_PUBLIC_API_URL=http://192.168.1.10:3000/api/v1
    ```
-3. Thực hiện commit theo chuẩn **Conventional Commits**:
-   ```sh
-   git commit -m "feat(mobile): bo sung man hinh danh sach di cho"
-   ```
-4. Đẩy nhánh lên repository:
-   ```sh
-   git push origin feature/TenTinhNang
-   ```
-5. Mở một **Pull Request** trên GitHub.
 
-> [!TIP]
-> Trước khi mở Pull Request, đảm bảo kiểm tra mã nguồn vượt qua tất cả bài kiểm tra:
-> ```sh
-> npm run typecheck
-> npm run lint
-> npm test
-> ```
+3. Máy và điện thoại cùng Wi-Fi; cho phép Node.js nhận kết nối trên mạng riêng nếu firewall hỏi.
+4. Mở terminal khác ở root và chạy `npm run start -w mobile -- --clear --go`.
+5. Thử `http://<IP_LAN>:3000/health` trên điện thoại trước khi kiểm tra app.
 
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
+`localhost` trên điện thoại là chính điện thoại. Expo tunnel chỉ chuyển tiếp Metro, không tự đưa API local ra internet; để thử từ mạng khác, dùng API online do Scrum Master cung cấp.
 
----
+<a id="lenh"></a>
 
-<!-- LICENSE -->
-## Giấy phép (License)
+## Lệnh thường dùng
 
-Dự án được phân phối dưới giấy phép **MIT License**. Chi tiết xem tại tệp [LICENSE](LICENSE).
+Chạy từ root, trừ khi ghi khác:
 
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
+| Lệnh | Mục đích |
+|---|---|
+| `npm ci` | Cài dependencies theo lockfile |
+| `npm run start -w mobile -- --clear --go` | Expo Go, xóa cache |
+| `npm run start -w mobile -- --clear --go --tunnel` | Expo Go qua tunnel |
+| `npm run build -w @bepnhaminh/shared` | Build shared |
+| `npm run dev -w @bepnhaminh/shared` | Build shared khi source thay đổi |
+| `npm run dev:api` | API local với auto reload |
+| `npm run db:up` / `npm run db:down` | Bật / tắt DB và MinIO local |
+| `npm run db:generate -w backend` | Generate Prisma Client |
+| `npm run db:deploy -w backend` | Áp dụng migration có sẵn lên DB đang cấu hình |
+| `npm run db:migrate -w backend -- --name ten_thay_doi` | Tạo migration trên DB phát triển riêng |
+| `npm run db:studio` | Prisma Studio với DB đang cấu hình |
+| `npm run build` | Build shared và backend |
+| `npm run typecheck` | Kiểm tra TypeScript các workspace |
+| `npm run lint` | ESLint |
+| `npm test` | Test hiện có |
 
----
+<a id="loi"></a>
 
-<!-- CONTACT -->
-## Liên hệ (Contact)
+## Xử lý lỗi
 
-Dự án: [https://github.com/your-username/bep-nha-minh](https://github.com/your-username/bep-nha-minh)  
-Tài liệu kiến trúc: [docs/00-overview.md](file:///C:/Projects/BepNhaMinh_Workspace/docs/00-overview.md)
+| Hiện tượng | Cách xử lý |
+|---|---|
+| Clone báo repository not found / permission denied | Xin Scrum Master quyền repo cho đúng tài khoản GitHub; kiểm tra URL clone |
+| PowerShell chặn `npm.ps1` | Dùng `npm.cmd` thay `npm`; dùng `npx.cmd` nếu cần |
+| Expo báo chạy nhầm root monorepo | Dùng `npm run start -w mobile -- --clear --go` |
+| Không resolve `@bepnhaminh/shared` | Cài dependencies tại root, build shared rồi restart Expo với `--clear` |
+| Không thấy terminal Expo để dừng | Mở terminal mới rồi start; không cần dừng khi chưa chạy |
+| Quét QR không mở được app | Kiểm tra Wi-Fi, quyền mạng local của Expo Go, firewall / VPN; thử `--tunnel` và quét QR mới |
+| Expo Go báo SDK không tương thích | Project dùng SDK 58; kiểm tra Expo Go hỗ trợ và trao đổi Scrum Master, không tự nâng dependencies |
+| Home đỏ nhưng app đã mở | Xem API Base URL; mở `/health` trên điện thoại, đợi server thức dậy rồi reload bằng phím `r` tại terminal |
+| URL cũ dù đã sửa `.env` | Lưu đúng `mobile/.env`; kiểm tra `.env.local` / biến shell ghi đè; restart Expo với `--clear` |
+| Backend thiếu biến / JWT secret ngắn | Sửa `backend/.env`, xin bộ biến dev từ Scrum Master; mỗi secret ít nhất 32 ký tự |
+| Prisma P1001 tại `localhost:5432` | Nếu dùng Docker, mở Docker rồi `db:up`; nếu dùng Supabase, sửa `DATABASE_URL` sang URI được cấp và lưu |
+| API xanh nhưng không đăng nhập / CRUD được | `/ping` là smoke test; các module nghiệp vụ chưa hoàn tất |
 
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
+Nếu vẫn lỗi, gửi log từ dòng lỗi đầu, hệ điều hành, Node / npm version và cách tái hiện cho Scrum Master hoặc dev phụ trách; che credentials.
 
----
+<a id="deploy"></a>
 
-<!-- ACKNOWLEDGMENTS -->
-## Lời cảm ơn (Acknowledgments)
+## GitHub, Render và Supabase
 
-* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
-* [Expo Documentation](https://docs.expo.dev/)
-* [Prisma ORM](https://www.prisma.io/)
-* [Shields.io](https://shields.io/)
-* [Simple Icons](https://simpleicons.org/)
+- Repository: [TrKimHieu/BepNhaMinh](https://github.com/TrKimHieu/BepNhaMinh).
+- API: `https://bepnhaminh-api.onrender.com/api/v1`.
+- Render build [backend/Dockerfile](backend/Dockerfile) với context là **root repository** vì cần shared. Build local bằng `docker build -f backend/Dockerfile -t bepnhaminh-api .`.
+- Supabase cung cấp PostgreSQL qua Prisma; Supabase Auth / Storage chưa được dùng cho nghiệp vụ hiện tại.
+- [CI](.github/workflows/ci.yml) kiểm tra typecheck, lint, test khi mở PR hoặc push `main`.
+- [Deploy backend](.github/workflows/deploy-backend.yml) gọi Render Deploy Hook khi push `main` có thay đổi `backend/**`, `packages/shared/**`, `infrastructure/**` hoặc workflow đó; hỗ trợ chạy thủ công qua `workflow_dispatch`.
+- Xin `RENDER_DEPLOY_HOOK_URL` từ Scrum Master nếu được giao deploy. Lưu tại **GitHub repo → Settings → Secrets and variables → Actions**. Job dùng environment `production`, có thể chịu quy tắc bảo vệ environment của repo.
+- Workflow deploy hiện độc lập với CI, chưa chờ CI thành công. Hook thành công chỉ xác nhận nhận yêu cầu deploy; xem kết quả build / runtime trên Render.
+- **Migration chưa tự động chạy khi Render khởi động.** Docker CMD hiện chỉ chạy server; người phụ trách phải phối hợp migration riêng. Push schema không tự cập nhật database.
+- Service hiện được cấu hình qua Render Dashboard. Dev mới chỉ chạy Expo Go không cần tạo service Render, project Supabase hoặc Blueprint riêng; liên hệ Scrum Master nếu được giao thay đổi hạ tầng.
 
-<p align="right">(<a href="#readme-top">về đầu trang</a>)</p>
+<a id="nhom"></a>
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/your-username/bep-nha-minh.svg?style=for-the-badge
-[contributors-url]: https://github.com/your-username/bep-nha-minh/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/your-username/bep-nha-minh.svg?style=for-the-badge
-[forks-url]: https://github.com/your-username/bep-nha-minh/network/members
-[stars-shield]: https://img.shields.io/github/stars/your-username/bep-nha-minh.svg?style=for-the-badge
-[stars-url]: https://github.com/your-username/bep-nha-minh/stargazers
-[issues-shield]: https://img.shields.io/github/issues/your-username/bep-nha-minh.svg?style=for-the-badge
-[issues-url]: https://github.com/your-username/bep-nha-minh/issues
-[license-shield]: https://img.shields.io/github/license/your-username/bep-nha-minh.svg?style=for-the-badge
-[license-url]: https://github.com/your-username/bep-nha-minh/blob/main/LICENSE
-[TypeScript]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
-[TypeScript-url]: https://www.typescriptlang.org/
-[ReactNative]: https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[ReactNative-url]: https://reactnative.dev/
-[Expo]: https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white
-[Expo-url]: https://expo.dev/
-[NodeJS]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white
-[NodeJS-url]: https://nodejs.org/
-[Express]: https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white
-[Express-url]: https://expressjs.com/
-[Prisma]: https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white
-[Prisma-url]: https://www.prisma.io/
-[PostgreSQL]: https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white
-[PostgreSQL-url]: https://www.postgresql.org/
-[Docker]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
-[Docker-url]: https://www.docker.com/
-[Zod]: https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white
-[Zod-url]: https://zod.dev/
-[MinIO]: https://img.shields.io/badge/MinIO-C72C48?style=for-the-badge&logo=minio&logoColor=white
-[MinIO-url]: https://min.io/
+## Làm việc với nhóm
+
+Sau khi chạy thử và nhận cấu hình cho task, tạo nhánh:
+
+```sh
+git switch -c feature/ten-task
+```
+
+Trước khi mở PR:
+
+```sh
+npm run build -w @bepnhaminh/shared
+npm run db:generate -w backend
+npm run typecheck
+npm run lint
+npm test
+```
+
+Không commit secret. Khi thêm biến, cập nhật `.env.example` và README: ghi rõ phải xin biến nào từ Scrum Master để thực hiện việc gì. Với schema, commit migration và mô tả ảnh hưởng dữ liệu trong PR.
+
+| Tài liệu | Nội dung |
+|---|---|
+| [Tổng quan](docs/00-overview.md) | Bài toán, vai trò và phạm vi MVP |
+| [API contract](docs/02-api-contract.md) | Endpoint dự kiến; đối chiếu code route để biết phần đã triển khai |
+| [ADR monorepo](docs/adr/0001-monorepo-npm-workspaces.md) | Quyết định dùng npm workspaces |
+| [Prisma schema](backend/prisma/schema.prisma) | Models, quan hệ và enums |
+| [Mobile env mẫu](mobile/.env.example) | Biến mobile công khai |
+| [Backend env mẫu](backend/.env.example) | Tên biến backend; xin giá trị theo môi trường từ Scrum Master |
+
+### Logo ứng dụng
+
+Logo chính thức được lưu tại [mobile/assets/images/logo.png](mobile/assets/images/logo.png); bản dùng cho tài liệu ở [docs/images/logo.png](docs/images/logo.png). Hai file giữ nguyên ảnh gốc được cung cấp, gồm nền kem.
+
+Home và cấu hình icon iOS / Android / favicon dùng asset trong `mobile`. Sau khi pull code mới, reload Expo Go hoặc khởi động lại với `npm run start -w mobile -- --clear --go` để thấy logo Home. Icon của ứng dụng cài riêng cần build lại; Expo Go trên màn hình điện thoại vẫn có icon của chính Expo Go. Khi thay logo, cập nhật cả hai bản PNG để tài liệu và ứng dụng đồng bộ.
+
+Mục tiêu MVP tiếp theo: xác thực email / password, gia đình và mã mời, công thức và ảnh, thực đơn tuần, danh sách đi chợ. Những phần này cần được phát triển và kiểm thử riêng sau bước thiết lập môi trường.

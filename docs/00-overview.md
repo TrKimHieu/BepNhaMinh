@@ -1,5 +1,9 @@
 # Bếp Nhà Mình — tổng quan
 
+<p align="center">
+  <img src="images/logo.png" alt="Logo Bếp Nhà Mình" width="160" height="160">
+</p>
+
 ## Bài toán
 
 Gia đình nhiều người, mỗi tối đều phải trả lời "mai ăn gì". Hiện tại mọi thứ nằm rải rác trong ghi chú điện thoại và trí nhớ. App gom lại một chỗ: thực đơn theo tuần, công thức nấu, đi chợ.
